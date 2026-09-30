@@ -4,8 +4,9 @@ import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
-  base: '/monarch-campus/'
+
   return {
+    base: '/monarch-campus/'
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
