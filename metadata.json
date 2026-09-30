@@ -1,0 +1,6 @@
+{
+  "name": "Monarch Campus LMS",
+  "description": "Modern bilingual (English & Sinhala) Learning Management System with unified portal login, student registration, course dashboard, video lessons, and MCQ practice.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
