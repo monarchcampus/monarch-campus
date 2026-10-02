@@ -25,7 +25,7 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
   const { theme, toggleTheme } = useTheme();
-  const { currentUser, logout, loginAsRole } = useAuth();
+  const { currentUser, logout } = useAuth();
   const { language, setLanguage, t } = useLanguage();
   const { siteConfig } = useLmsData();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -129,25 +129,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
 
             {/* 4. USER AUTH & PORTAL SELECTOR */}
             <div className="flex items-center gap-2">
-              {/* Quick Role Switcher */}
-              <select
-                value={currentUser?.role || ''}
-                onChange={(e) => {
-                  const r = e.target.value as any;
-                  if (r) {
-                    loginAsRole(r);
-                    onNavigate('dashboard');
-                  }
-                }}
-                className="hidden lg:block rounded-xl border border-amber-400/50 bg-amber-50/70 dark:bg-slate-900 px-2.5 py-1.5 text-xs font-bold text-slate-800 dark:text-slate-200 cursor-pointer shadow-xs focus:ring-2 focus:ring-amber-500"
-                title="Switch Portal Role"
-              >
-                <option value="" disabled>පෝර්ටලය තෝරන්න (Select Portal)...</option>
-                <option value="lecturer">🎓 Lecturer Portal (ආචාර්ය)</option>
-                <option value="student">🎒 Student Dashboard (සිසුවා)</option>
-                <option value="superadmin">👑 Super Admin Console</option>
-                <option value="manager">💼 Operations Manager</option>
-              </select>
 
               {currentUser ? (
                 <div className="flex items-center gap-2">
@@ -251,30 +232,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                   English
                 </button>
               </div>
-            </div>
-            {/* Mobile Portal / Role Switcher */}
-            <div className="pt-3 border-t border-slate-200 dark:border-slate-800">
-              <span className="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1.5">
-                පෝර්ටලය මාරු කරන්න (Switch Portal Role):
-              </span>
-              <select
-                value={currentUser?.role || ''}
-                onChange={(e) => {
-                  const r = e.target.value as any;
-                  if (r) {
-                    loginAsRole(r);
-                    onNavigate('dashboard');
-                    setMobileMenuOpen(false);
-                  }
-                }}
-                className="w-full rounded-xl border border-amber-400/50 bg-amber-50/70 dark:bg-slate-900 p-2 text-xs font-bold text-slate-900 dark:text-white"
-              >
-                <option value="" disabled>පෝර්ටලය තෝරන්න...</option>
-                <option value="lecturer">🎓 Lecturer Portal (ආචාර්ය)</option>
-                <option value="student">🎒 Student Dashboard (සිසුවා)</option>
-                <option value="superadmin">👑 Super Admin Console</option>
-                <option value="manager">💼 Operations Manager</option>
-              </select>
             </div>
 
             {!currentUser && (

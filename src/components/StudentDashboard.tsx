@@ -795,6 +795,20 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate }
                     </span>
                   </div>
                 ))}
+                <div className="pt-2 flex flex-wrap items-center justify-between border-t border-amber-200/60 dark:border-amber-900/40 text-[11px] gap-2">
+                  <span className="text-amber-900 dark:text-amber-200">
+                    {t('රිසිට්පත තවමත් යොමු කර නොමැති නම්:', 'If slip copy not yet sent:')}
+                  </span>
+                  <a
+                    href="https://wa.me/94768720100"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-bold text-emerald-700 dark:text-emerald-400 hover:underline inline-flex items-center gap-1"
+                  >
+                    <span>💬 WhatsApp 0768720100 වෙත රිසිට්පත යොමු කරන්න</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
               </div>
             </div>
           )}
@@ -833,34 +847,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate }
           {/* ========================================================================= */}
           {activeTab === 'overview' && (
             <div className="space-y-8 animate-in fade-in">
-              {/* Quick Switch Banner to Lecturer Portal for easy reviewer testing */}
-              <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-500/5 border border-amber-300 dark:border-amber-900/60 shadow-xs">
-                <div className="flex items-center gap-2.5">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-500 text-slate-950 font-bold shadow-xs">
-                    🎓
-                  </span>
-                  <div>
-                    <span className="block text-xs font-black text-slate-900 dark:text-white">
-                      {t('ආචාර්ය කළමනාකරණ පුවරුව (Lecturer Portal)', 'Lecturer Academic Console')}
-                    </span>
-                    <span className="text-[11px] text-slate-600 dark:text-slate-400">
-                      {t('ලෙක්චරර් ලෙස Zoom පන්ති කාලසටහන්ගත කිරීමට සහ විභාග මෙහෙයවීමට පිවිසෙන්න', 'Switch to Lecturer console to schedule Zoom sessions & manage courses')}
-                    </span>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    loginAsRole('lecturer');
-                    onNavigate('dashboard');
-                  }}
-                  className="cursor-pointer inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 text-xs font-black hover:opacity-90 shadow-sm transition"
-                >
-                  <span>{t('ආචාර්ය Console එකට පිවිසෙන්න ➔', 'Open Lecturer Portal ➔')}</span>
-                </button>
-              </div>
-
               {/* ---------------- 24-HOUR LIVE ZOOM CLASSES SECTION ---------------- */}
               {next24HourClasses.length > 0 && (
                 <div className="space-y-4">
@@ -1098,8 +1084,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate }
                                   </div>
                                   <p className="text-[11px] text-rose-600 dark:text-rose-400 mt-0.5">
                                     {t(
-                                      'මෙම සජීවී Zoom පන්තියට සහභාගී වීමට අවශ්‍ය සූම් Join Link සහ Credentials ලබාගැනීමට කරුණාකර ඔබගේ බැංකු ගෙවීම සම්පූර්ණ කරන්න.',
-                                      'Please complete course payment and upload bank slip to unlock live Zoom access.'
+                                      'මෙම සජීවී Zoom පන්තියට සහභාගී වීමට අවශ්‍ය සූම් Join Link සහ Credentials ලබාගැනීමට කරුණාකර ඔබගේ බැංකු ගෙවීම සම්පූර්ණ කර රිසිට්පත 0768720100 අංකයට WhatsApp කරන්න.',
+                                      'Please complete course payment and send receipt to 0768720100 via WhatsApp to unlock live Zoom access.'
                                     )}
                                   </p>
                                 </div>

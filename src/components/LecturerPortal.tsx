@@ -60,24 +60,29 @@ export const LecturerPortal: React.FC<LecturerPortalProps> = ({ onNavigate }) =>
 
   const [activeTab, setActiveTab] = useState<LecturerTab>('overview');
 
-  // Filter courses taught by this lecturer (or fallback to all if admin is previewing)
-  const lecturerCourses = courses.filter((c) => {
-    if (!currentUser) return true;
+  // Filter courses taught strictly by this lecturer (never show other lecturers' courses)
+  const availableLecturerCourses = courses.filter((c) => {
+    if (!currentUser) return false;
     if (currentUser.role === 'superadmin') return true;
-    const phoneMatch = c.instructorPhone === currentUser.phone;
-    const nameMatch =
-      c.instructorNameEn.toLowerCase().includes(currentUser.fullName.toLowerCase()) ||
-      currentUser.fullName.toLowerCase().includes(c.instructorNameEn.toLowerCase());
+    const phoneMatch = Boolean(currentUser.phone && c.instructorPhone === currentUser.phone);
+    const nameMatch = Boolean(
+      (c.instructorNameEn && currentUser.fullName && c.instructorNameEn.toLowerCase().includes(currentUser.fullName.toLowerCase())) ||
+      (currentUser.fullName && c.instructorNameEn && currentUser.fullName.toLowerCase().includes(c.instructorNameEn.toLowerCase()))
+    );
     return phoneMatch || nameMatch;
   });
 
-  // Effective courses (ensure at least 1 course is available for demo)
-  const availableLecturerCourses = lecturerCourses.length > 0 ? lecturerCourses : courses.slice(0, 1);
   const [selectedCourseId, setSelectedCourseId] = useState<string>(
-    availableLecturerCourses[0]?.id || courses[0]?.id || 'course-maths-2028'
+    availableLecturerCourses[0]?.id || ''
   );
 
-  const selectedCourse = courses.find((c) => c.id === selectedCourseId) || availableLecturerCourses[0];
+  React.useEffect(() => {
+    if (availableLecturerCourses.length > 0 && !availableLecturerCourses.some((c) => c.id === selectedCourseId)) {
+      setSelectedCourseId(availableLecturerCourses[0].id);
+    }
+  }, [availableLecturerCourses, selectedCourseId]);
+
+  const selectedCourse = availableLecturerCourses.find((c) => c.id === selectedCourseId) || availableLecturerCourses[0];
 
   // Students enrolled in selected course
   // PRIVACY RULE: Lecturer sees student names ONLY.
@@ -374,37 +379,15 @@ export const LecturerPortal: React.FC<LecturerPortalProps> = ({ onNavigate }) =>
               <strong className="text-slate-900 dark:text-white">{currentUser?.fullName}</strong>
             </p>
 
-            {/* Authority & Privacy Shield */}
+            {/* Privacy Shield */}
             <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/70 dark:bg-slate-800/70 border border-amber-200/80 dark:border-slate-700 font-bold">
-                <span className="text-amber-700 dark:text-amber-400">පාළක ධුරාවලිය:</span>
-                <span className="text-purple-600 dark:text-purple-400">1. Super Admin</span>
-                <span>➔</span>
-                <span className="text-blue-600 dark:text-blue-400">2. Manager</span>
-                <span>➔</span>
-                <span className="text-emerald-600 dark:text-emerald-400">3. Lecturer (ඔබ)</span>
-                <span>➔</span>
-                <span className="text-slate-800 dark:text-white">4. Student 🎓</span>
-              </div>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold text-[11px] border border-emerald-300 dark:border-emerald-800">
-                🔒 ශිෂ්‍ය රහස්‍යතා රීතිය: නම සහ ලකුණු තත්ත්වය පමණි
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold text-xs border border-emerald-300 dark:border-emerald-800">
+                🔒 ශිෂ්‍ය රහස්‍යතා ආරක්ෂණය: ශිෂ්‍ය නාම සහ ලකුණු තත්ත්වය පමණක් ප්‍රදර්ශනය කෙරේ
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                loginAsRole('student');
-                if (onNavigate) onNavigate('dashboard');
-              }}
-              className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-100 hover:bg-purple-200 dark:bg-purple-950 dark:hover:bg-purple-900 text-purple-900 dark:text-purple-200 font-bold text-xs border border-purple-300 dark:border-purple-800 transition"
-              title="සිසුන්ට සජීවී ලෙසන්ස් සහ කැලැන්ඩරය දිස්වන අයුරු බලන්න"
-            >
-              <span>🎒</span>
-              <span>{t('සිසුන්ගේ View එක බලන්න (Student View)', 'Preview Student View')}</span>
-            </button>
             <span className="px-3.5 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-bold text-xs border border-emerald-300 dark:border-emerald-800">
               {currentUser?.fullName} (Lecturer Portal)
             </span>
@@ -825,21 +808,9 @@ export const LecturerPortal: React.FC<LecturerPortalProps> = ({ onNavigate }) =>
           </div>
 
           {zoomSuccessMsg && (
-            <div className="p-4 rounded-xl bg-emerald-50 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-bold flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-emerald-200 dark:border-emerald-800 animate-in fade-in">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
-                <span>✓ සූම් පන්තිය සාර්ථකව කාලසටහන්ගත විය! එම කෝස් එක තෝරාගෙන ඇති සියලු සිසුන්ගේ Dashboard එකෙහි සහ සජීවී කැලැන්ඩරයෙහි දැන් දිස්වේ.</span>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  loginAsRole('student');
-                  if (onNavigate) onNavigate('dashboard');
-                }}
-                className="cursor-pointer shrink-0 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs"
-              >
-                සිසුන්ගේ Live Calendar එක බලන්න ➔
-              </button>
+            <div className="p-4 rounded-xl bg-emerald-50 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-bold flex items-center gap-2 border border-emerald-200 dark:border-emerald-800 animate-in fade-in">
+              <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
+              <span>✓ සූම් පන්තිය සාර්ථකව කාලසටහන්ගත විය! එම කෝස් එක තෝරාගෙන ඇති සියලු සිසුන්ගේ Dashboard එකෙහි සහ සජීවී කැලැන්ඩරයෙහි දැන් දිස්වේ.</span>
             </div>
           )}
 
@@ -882,7 +853,7 @@ export const LecturerPortal: React.FC<LecturerPortalProps> = ({ onNavigate }) =>
                   onChange={(e) => setZoomTargetCourseId(e.target.value)}
                   className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 p-2.5 text-xs sm:text-sm font-bold text-slate-900 dark:text-white shadow-xs focus:ring-2 focus:ring-amber-500 outline-hidden"
                 >
-                  {courses.map((c) => (
+                  {availableLecturerCourses.map((c) => (
                     <option key={c.id} value={c.id}>
                       {c.titleSi} — [{c.grade}] ({c.instructorNameSi})
                     </option>
@@ -2078,7 +2049,7 @@ export const LecturerPortal: React.FC<LecturerPortalProps> = ({ onNavigate }) =>
                   onChange={(e) => setZoomTargetCourseId(e.target.value)}
                   className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-2.5 font-bold text-slate-900 dark:text-white"
                 >
-                  {courses.map((c) => (
+                  {availableLecturerCourses.map((c) => (
                     <option key={c.id} value={c.id}>
                       {c.titleSi} — [{c.grade}] ({c.instructorNameSi})
                     </option>

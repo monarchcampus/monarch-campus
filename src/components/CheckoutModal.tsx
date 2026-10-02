@@ -3,7 +3,6 @@ import {
   X,
   CreditCard,
   Building2,
-  UploadCloud,
   CheckCircle2,
   ShieldCheck,
   ArrowRight,
@@ -15,6 +14,8 @@ import {
   Sparkles,
   User,
   Phone,
+  MessageCircle,
+  ExternalLink,
 } from 'lucide-react';
 import { Course } from '../types';
 import { useAuth } from '../context/AuthContext';
@@ -45,8 +46,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ course, onClose, o
     bankAccounts[0]?.id || 'bank-1'
   );
   const [slipReference, setSlipReference] = useState('');
-  const [slipImageUploaded, setSlipImageUploaded] = useState(false);
   const [copiedBankId, setCopiedBankId] = useState<string | null>(null);
+  const [copiedWhatsApp, setCopiedWhatsApp] = useState(false);
 
   // Promo code
   const [promoInput, setPromoInput] = useState('');
@@ -155,9 +156,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ course, onClose, o
         bankId: selectedBankId,
         bankName: selectedBank?.bankName || 'Direct Bank Transfer',
         slipReference: slipReference.trim(),
-        slipImageUrl: slipImageUploaded
-          ? 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&auto=format&fit=crop&q=80'
-          : undefined,
       });
 
       setIsProcessing(false);
@@ -219,6 +217,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ course, onClose, o
               </p>
               <div className="pt-2 text-[11px] font-mono text-slate-600 dark:text-slate-400">
                 Ref: <strong>{slipReference}</strong> · Plan: <strong>{selectedPlan.toUpperCase()}</strong> · Amount: <strong>Rs. {finalAmount.toLocaleString()}</strong>
+              </div>
+
+              <div className="mt-3 p-3 rounded-xl bg-emerald-100/80 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-800 text-xs text-emerald-950 dark:text-emerald-200 space-y-1">
+                <span className="font-bold block">💬 වැදගත් පියවර (Final Step):</span>
+                <span>ඔබගේ බැංකු රිසිට්පතෙහි ඡායා පිටපතක් / Screenshot එකක් / PDF එක <strong>0768720100</strong> අංකයට WhatsApp මගින් යොමු කරන්න.</span>
               </div>
             </div>
             <p className="text-xs text-slate-500 animate-pulse">
@@ -488,8 +491,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ course, onClose, o
               </div>
             </div>
 
-            {/* 5. Bank Receipt Slip Reference & Upload */}
-            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850 p-4 space-y-3">
+            {/* 5. Bank Receipt Slip Reference & WhatsApp Verification Notice */}
+            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850 p-4 space-y-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                   {t('බැංකු රිසිට්පත් අංකය (Slip Reference / Transaction ID)', 'Bank Slip Ref / Transaction ID')} *
@@ -500,29 +503,81 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ course, onClose, o
                   onChange={(e) => setSlipReference(e.target.value)}
                   placeholder="e.g. BOC-TXN-9842104 or REF-771920"
                   required
-                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3.5 py-2.5 text-xs text-slate-900 dark:text-white font-mono tracking-wider focus:outline-none focus:border-amber-500"
+                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3.5 py-2.5 text-xs text-slate-900 dark:text-white font-mono tracking-wider focus:outline-none focus:border-amber-500 font-bold"
                 />
               </div>
 
-              {/* Upload Receipt Simulator */}
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  {t('රිසිට්පතේ ඡායාරූපය (Upload Slip Receipt - Optional)', 'Upload Slip Photo')}
-                </label>
-                <div
-                  onClick={() => setSlipImageUploaded(!slipImageUploaded)}
-                  className={`cursor-pointer rounded-xl border-2 border-dashed p-3 text-center transition ${
-                    slipImageUploaded
-                      ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20'
-                      : 'border-slate-300 dark:border-slate-700 hover:border-amber-400'
-                  }`}
-                >
-                  <UploadCloud className={`mx-auto h-6 w-6 ${slipImageUploaded ? 'text-emerald-500' : 'text-slate-400'}`} />
-                  <p className="mt-1 text-xs font-semibold text-slate-700 dark:text-slate-300">
-                    {slipImageUploaded
-                      ? t('✓ රිසිට්පත සාර්ථකව තෝරාගන්නා ලදී (Slip Attached)', '✓ Slip Attached')
-                      : t('රිසිට්පත Attach කිරීමට මෙතැන ක්ලික් කරන්න', 'Click to attach deposit slip / receipt')}
-                  </p>
+              {/* WhatsApp Slip Verification Instructions (No file upload) */}
+              <div className="rounded-2xl border-2 border-emerald-500/40 bg-emerald-50/80 dark:bg-emerald-950/40 p-4 space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center shrink-0 font-bold shadow-sm">
+                    <MessageCircle className="w-5 h-5 fill-current" />
+                  </div>
+                  <div className="space-y-1">
+                    <h5 className="text-xs sm:text-sm font-black text-emerald-950 dark:text-emerald-200">
+                      {t('රිසිට්පත WhatsApp මගින් යොමු කිරීමේ උපදෙස්', 'Send Slip Copy via WhatsApp')}
+                    </h5>
+                    <p className="text-[11.5px] text-emerald-800 dark:text-emerald-300 leading-relaxed font-medium">
+                      {t(
+                        'බැංකුවට මුදල් බැර කළ පසු, අදාළ බැංකු රිසිට්පතෙහි පැහැදිලි ඡායා පිටපතක් / Screenshot එකක් / PDF එකක් පහත සඳහන් අපගේ නිල WhatsApp අංකයට සෙන්ඩ් කරන්න:',
+                        'After depositing funds, please send a clear photo, screenshot, or PDF of your bank receipt to our official WhatsApp number:'
+                      )}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-emerald-200/80 dark:border-emerald-900/60">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                      {t('නිල WhatsApp අංකය:', 'Official WhatsApp:')}
+                    </span>
+                    <a
+                      href={`https://wa.me/94768720100?text=${encodeURIComponent(
+                        `ආයුබෝවන් Monarch Campus,\nමම පාඨමාලා ගෙවීම් සිදු කළෙමි.\n📚 පාඨමාලාව: ${course.titleSi}\n👤 නම: ${currentUser?.fullName || guestName || 'සිසුවා'}\n📞 දුරකථනය: ${currentUser?.phone || guestPhone || ''}\n💳 Transaction ID: ${slipReference || 'N/A'}\n\nකරුණාකර රිසිට්පත පරීක්ෂා කර පාඨමාලාව සක්‍රිය කරන්න.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-base font-black text-emerald-700 dark:text-emerald-300 tracking-wider hover:underline"
+                    >
+                      0768720100
+                    </a>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard?.writeText('0768720100');
+                        setCopiedWhatsApp(true);
+                        setTimeout(() => setCopiedWhatsApp(false), 2000);
+                      }}
+                      className="cursor-pointer px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-emerald-300 dark:border-emerald-800 text-[11px] font-bold text-emerald-800 dark:text-emerald-300 hover:bg-emerald-50 flex items-center gap-1 shadow-2xs"
+                    >
+                      {copiedWhatsApp ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>0768720100 Copy</span>
+                        </>
+                      )}
+                    </button>
+
+                    <a
+                      href={`https://wa.me/94768720100?text=${encodeURIComponent(
+                        `ආයුබෝවන් Monarch Campus,\nමම පාඨමාලා ගෙවීම් සිදු කළෙමි.\n📚 පාඨමාලාව: ${course.titleSi}\n👤 නම: ${currentUser?.fullName || guestName || 'සිසුවා'}\n📞 දුරකථනය: ${currentUser?.phone || guestPhone || ''}\n💳 Transaction ID: ${slipReference || 'N/A'}\n\nකරුණාකර රිසිට්පත පරීක්ෂා කර පාඨමාලාව සක්‍රිය කරන්න.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="cursor-pointer px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-black flex items-center gap-1.5 shadow-sm transition"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>WhatsApp වෙත යොමු වන්න</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

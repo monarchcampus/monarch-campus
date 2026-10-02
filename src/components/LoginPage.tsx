@@ -342,9 +342,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                   </button>
                 </div>
                 <div className="mt-2.5 pt-2 border-t border-slate-200/80 dark:border-slate-800 text-[10px] text-slate-500 space-y-0.5">
-                  <div className="font-bold text-amber-700 dark:text-amber-400">
-                    {t('පාළක ධුරාවලිය: 1. Super Admin ➔ 2. Manager ➔ 3. Lecturer ➔ 4. Student', 'Hierarchy: 1. Super Admin ➔ 2. Manager ➔ 3. Lecturer ➔ 4. Student')}
-                  </div>
                   <div className="text-[9.5px]">
                     {t('🔒 ආචාර්යවරයාට (Lecturer) සිසුවාගේ නම සහ ලකුණු තත්ත්වය පමණක් දිස්වේ.', '🔒 Lecturer is strictly limited to Student Name & Marks status.')}
                   </div>

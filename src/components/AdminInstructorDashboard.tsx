@@ -125,19 +125,6 @@ export const AdminInstructorDashboard: React.FC<AdminInstructorDashboardProps> =
               <strong className="text-slate-900 dark:text-white">{currentUser?.fullName}</strong> ({currentUser?.phone})
             </p>
 
-            {/* Hierarchy Path Badge */}
-            <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-white/70 dark:bg-slate-800/70 border border-amber-200/80 dark:border-slate-700 text-xs">
-              <span className="font-bold text-amber-700 dark:text-amber-400">
-                {t('පාළක ධුරාවලිය:', 'Authority Chain:')}
-              </span>
-              <span className="font-bold text-purple-600 dark:text-purple-400">Super Admin</span>
-              <span>➔</span>
-              <span className="font-bold text-blue-600 dark:text-blue-400">Manager</span>
-              <span>➔</span>
-              <span className="font-bold text-emerald-600 dark:text-emerald-400">Lecturer</span>
-              <span>➔</span>
-              <span className="font-bold text-slate-900 dark:text-white">Student 🎓</span>
-            </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">

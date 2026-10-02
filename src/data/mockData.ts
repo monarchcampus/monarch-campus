@@ -353,7 +353,7 @@ export const INITIAL_ZOOM_CLASSES: ZoomClass[] = [
     passcode: 'PHYSICS27',
     joinUrl: 'https://zoom.us/j/84199201152?pwd=PHYSICS27_STUDENT',
     hostUrl: 'https://zoom.us/s/84199201152?zak=HOST_PHYSICS_1144',
-    instructorPhone: '0701306952',
+    instructorPhone: '0723456789',
     instructorName: 'Dr. Niranjan Bandara',
     status: 'scheduled',
     whatsAppGroupLink: 'https://chat.whatsapp.com/Monarch2027PhysicsLive',
@@ -646,7 +646,7 @@ export const INITIAL_COURSES: Course[] = [
     instructorNameEn: 'Dr. Niranjan Bandara',
     instructorNameSi: 'ආචාර්ය නිරංජන් බණ්ඩාර',
     instructorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    instructorPhone: '0701306952',
+    instructorPhone: '0723456789',
     thumbnailGradient: 'from-amber-950 via-stone-900 to-black',
     thumbnailUrl: 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=600&auto=format&fit=crop&q=80',
     accentColor: '#f59e0b',
@@ -1004,7 +1004,7 @@ export const INITIAL_ASSIGNMENTS: Assignment[] = [
     dueDate: '2026-10-20',
     createdAt: '2026-09-22',
     lecturerName: 'Dr. Niranjan Bandara',
-    lecturerPhone: '0701306952',
+    lecturerPhone: '0723456789',
     submissions: [
       {
         studentId: 'user-student-active-2',

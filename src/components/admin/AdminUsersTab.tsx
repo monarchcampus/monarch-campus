@@ -92,40 +92,7 @@ export const AdminUsersTab: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* ---------------- AUTHORITY HIERARCHY BANNER ---------------- */}
-      <div className="rounded-2xl border border-amber-300 dark:border-amber-900/60 bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-amber-500/10 p-4 sm:p-5 shadow-xs">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black text-[10px] tracking-wider uppercase">
-                {isSuperAdmin ? '👑 SUPER ADMIN HIERARCHY' : '💼 MANAGER HIERARCHY'}
-              </span>
-              <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                {isSuperAdmin
-                  ? t('සුපර් ඇඩ්මින් යටතේ: Manager, Lecturer, Student පාලනය', 'Super Admin Master: Controls Managers, Lecturers & Students')
-                  : t('මැනේජර් යටතේ: Lecturer, Student පාලනය', 'Manager Portal: Controls Lecturers & Students')}
-              </span>
-            </div>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-              {t(
-                'සුපර් ඇඩ්මින් සහ මැනේජර් මෙම පද්ධතියේ විධායකයින් වන අතර ඔවුන්ගේ ගිණුම් ලෙක්චර කෝස් සමග සම්බන්ධ නොවේ. සියලු සේවාවන් ප්‍රධාන වශයෙන් සැපයෙන්නේ සිසුන් සඳහාය.',
-                'Super Admin and Manager are platform executives (not course lecturers). All management services are primarily rendered to support students.'
-              )}
-            </p>
-          </div>
 
-          {/* Visual Step-by-Step Chain */}
-          <div className="flex items-center gap-1.5 text-[11px] font-bold shrink-0 bg-white/80 dark:bg-slate-800/80 px-3 py-1.5 rounded-xl border border-amber-200 dark:border-slate-700">
-            <span className="text-purple-600 dark:text-purple-400">1. Super Admin</span>
-            <span className="text-slate-400">➔</span>
-            <span className="text-blue-600 dark:text-blue-400">2. Manager</span>
-            <span className="text-slate-400">➔</span>
-            <span className="text-emerald-600 dark:text-emerald-400">3. Lecturer</span>
-            <span className="text-slate-400">➔</span>
-            <span className="text-amber-600 dark:text-amber-400">4. Student 🎓</span>
-          </div>
-        </div>
-      </div>
 
       {/* Top Action Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
